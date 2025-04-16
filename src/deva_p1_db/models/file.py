@@ -7,7 +7,6 @@ from sqlalchemy import ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from deva_p1_db.models.base import Base
-from deva_p1_db.models.file_type import FileType
 from deva_p1_db.models.project import Project
 from deva_p1_db.models.task import Task
 
