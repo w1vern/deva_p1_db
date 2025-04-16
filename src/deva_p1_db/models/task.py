@@ -9,7 +9,6 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from deva_p1_db.models.base import Base
 from deva_p1_db.models.project import Project
 from deva_p1_db.models.user import User
-from deva_p1_db.models.file import File
 
 
 class Task(Base):
