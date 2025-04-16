@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "deva-p1-db"
+version = "0.1.0"
+description = ""
+authors = ["w1vern <bndvvl@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+sqlalchemy = "^2.0.40"
+asyncpg = "^0.30.0"
+alembic = "^1.15.2"
+isort = "^6.0.1"
+
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
