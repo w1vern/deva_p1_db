@@ -47,8 +47,8 @@ class FileRepository:
         stmt = select(File).where(File.project_id == project.id)
         return (await self.session.scalars(stmt)).all()
     
-    async def get_by_file_type(self, file_type: FileType) -> Sequence[File]:
-        stmt = select(File).where(File.file_type_id == file_type.id)
+    async def get_by_file_type(self, file_type: str) -> Sequence[File]:
+        stmt = select(File).where(File.file_type == file_type)
         return (await self.session.scalars(stmt)).all()
     
     async def get_by_user_file_name(self, user_file_name: str) -> Sequence[File]:
