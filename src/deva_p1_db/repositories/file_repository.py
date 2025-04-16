@@ -1,12 +1,12 @@
 from datetime import datetime
 from typing import Optional, Sequence
+from uuid import UUID
+
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from database.models import *
-from uuid import UUID
-
-from database.models.task import Task
+from deva_p1_db.models import *
+from deva_p1_db.models.task import Task
 
 
 class FileRepository:

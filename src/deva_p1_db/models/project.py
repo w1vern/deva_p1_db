@@ -1,11 +1,14 @@
 
 
 from datetime import datetime
-from sqlalchemy import ForeignKey
-from database.models.user import User
-from .base import Base
-from sqlalchemy.orm import Mapped, mapped_column, relationship
 from uuid import UUID, uuid4
+
+from sqlalchemy import ForeignKey
+from sqlalchemy.orm import Mapped, mapped_column, relationship
+
+from deva_p1_db.models.user import User
+
+from .base import Base
 
 
 class Project(Base):

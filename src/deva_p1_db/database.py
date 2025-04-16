@@ -1,12 +1,10 @@
 import contextlib
-from typing import Any, AsyncGenerator, AsyncIterator
+from typing import Any, AsyncIterator
 
 from sqlalchemy.ext.asyncio import (AsyncConnection, AsyncSession,
                                     async_sessionmaker, create_async_engine)
 
 from src.deva_p1_db.models.base import Base
-
-
 
 
 class DatabaseSessionManager:
@@ -54,10 +52,9 @@ class DatabaseSessionManager:
         async with self.connect() as conn:
             await conn.run_sync(Base.metadata.create_all)
 
-    
-def get_db_url(user: str, password: str, ip: str, port: str, name: str) -> str:
-    return f"postgresql+asyncpg://{user}:{password}@{ip}:{port}/{name}"
 
+def get_db_url(user: str, password: str, ip: str, port: int, name: str) -> str:
+    return f"postgresql+asyncpg://{user}:{password}@{ip}:{port}/{name}"
 
 
 # session_manager = DatabaseSessionManager(DATABASE_URL, {"echo": False})

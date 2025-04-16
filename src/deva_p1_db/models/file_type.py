@@ -4,8 +4,10 @@
 
 
 from uuid import UUID, uuid4
-from database.models.base import Base
+
 from sqlalchemy.orm import Mapped, mapped_column
+
+from deva_p1_db.models.base import Base
 
 
 class FileType(Base):

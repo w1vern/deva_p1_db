@@ -4,12 +4,12 @@ from datetime import datetime
 from uuid import UUID, uuid4
 
 from sqlalchemy import ForeignKey
-from database.models.base import Base
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from database.models.file_type import FileType
-from database.models.project import Project
-from database.models.task import Task
+from deva_p1_db.models.base import Base
+from deva_p1_db.models.file_type import FileType
+from deva_p1_db.models.project import Project
+from deva_p1_db.models.task import Task
 
 
 class File(Base):

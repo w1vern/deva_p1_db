@@ -1,14 +1,15 @@
 
 
 
-from sqlalchemy import ForeignKey
-from database.models.base import Base
-from sqlalchemy.orm import Mapped, mapped_column, relationship
 from uuid import UUID, uuid4
 
-from database.models.file import File
-from database.models.project import Project
-from database.models.user import User
+from sqlalchemy import ForeignKey
+from sqlalchemy.orm import Mapped, mapped_column, relationship
+
+from deva_p1_db.models.base import Base
+from deva_p1_db.models.file import File
+from deva_p1_db.models.project import Project
+from deva_p1_db.models.user import User
 
 
 class Task(Base):

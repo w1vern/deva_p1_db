@@ -1,10 +1,13 @@
 
 
 from datetime import datetime
+from uuid import UUID
+
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column
-from uuid import UUID
-from database.models.base import Base
+
+from deva_p1_db.models.base import Base
+
 
 class InvitedUsers(Base):
     __tablename__ = "invited_users"

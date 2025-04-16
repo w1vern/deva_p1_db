@@ -1,14 +1,14 @@
 
 
 from secrets import token_urlsafe
-
 from typing import Optional
+from uuid import UUID
+
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
+from werkzeug.security import check_password_hash, generate_password_hash
 
-from database.models import *
-from werkzeug.security import generate_password_hash, check_password_hash
-from uuid import UUID
+from deva_p1_db.models import *
 
 
 class UserRepository:

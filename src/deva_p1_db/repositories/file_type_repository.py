@@ -1,10 +1,11 @@
 
 from typing import Optional
+from uuid import UUID
+
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from database.models import *
-from uuid import UUID
+from deva_p1_db.models import *
 
 
 class FileTypeRepository:
