@@ -4,7 +4,7 @@ from uuid import UUID, uuid4
 
 from sqlalchemy.orm import Mapped, mapped_column
 
-from .base import Base
+from deva_p1_db.models.base import Base
 
 
 class User(Base):

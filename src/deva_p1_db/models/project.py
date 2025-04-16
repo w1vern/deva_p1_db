@@ -8,7 +8,7 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from deva_p1_db.models.user import User
 
-from .base import Base
+from deva_p1_db.models.base import Base
 
 
 class Project(Base):

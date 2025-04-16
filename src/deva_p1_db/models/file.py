@@ -18,10 +18,13 @@ class File(Base):
     user_file_name: Mapped[str]
     created_date: Mapped[datetime]
     last_modified_date: Mapped[datetime]
-    file_type: Mapped[str] = mapped_column()
+    file_type: Mapped[str]
     project_id: Mapped[UUID] = mapped_column(ForeignKey("projects.id"))
-    task_id: Mapped[UUID] = mapped_column(ForeignKey("tasks.id"))
+    
+    task_id: Mapped[UUID] = mapped_column(
+        ForeignKey("tasks.id", use_alter=True, name="fk_file_task", deferrable=True, initially="DEFERRED"),
+        nullable=True
+    )
 
-
-    project: Mapped[Project] = relationship(lazy="selectin", foreign_keys=[project_id])
-    task: Mapped[Task] = relationship(lazy="selectin", foreign_keys=[task_id])
+    project: Mapped["Project"] = relationship(lazy="selectin", foreign_keys=[project_id])
+    task: Mapped["Task"] = relationship(lazy="selectin", foreign_keys=[task_id])
