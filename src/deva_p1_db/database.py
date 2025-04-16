@@ -55,7 +55,7 @@ class DatabaseSessionManager:
             await conn.run_sync(Base.metadata.create_all)
 
     
-async def get_db_url(user: str, password: str, ip: str, port: str, name: str) -> str:
+def get_db_url(user: str, password: str, ip: str, port: str, name: str) -> str:
     return f"postgresql+asyncpg://{user}:{password}@{ip}:{port}/{name}"
 
 
