@@ -4,7 +4,7 @@ from typing import Any, AsyncIterator
 from sqlalchemy.ext.asyncio import (AsyncConnection, AsyncSession,
                                     async_sessionmaker, create_async_engine)
 
-from src.deva_p1_db.models.base import Base
+from deva_p1_db.models.base import Base
 
 
 class DatabaseSessionManager:
