@@ -33,7 +33,7 @@ class DatabaseSessionManager:
                 await connection.rollback()
                 raise
 
-    async def session(self) -> AsyncGenerator[AsyncSession]:
+    async def session(self) -> AsyncGenerator[AsyncSession, None]:
         if self._sessionmaker is None:
             raise Exception("DatabaseSessionManager is not initialized")
 
