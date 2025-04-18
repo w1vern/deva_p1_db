@@ -4,23 +4,23 @@ from enum import Enum
 
 
 class FileType(str, Enum):
-    png = "png"
-    jpg = "jpg"
-    webp = "webp"
+    image_png = "image_png"
+    image_jpg = "image_jpg"
+    image_webp = "image_webp"
 
-    mp3 = "mp3"
-    wav = "wav"
-    ogg = "ogg"
-    flac = "flac"
-    aac = "aac"
-    m4a = "m4a"
-    opus = "opus"
-    audio_webm = "audio_webm"
+    audio_mp3 = "mp3"
+    audio_wav = "wav"
+    audio_ogg = "audio_ogg"
+    audio_flac = "audio_flac"
+    audio_aac = "audio_aac"
+    audio_m4a = "audio_m4a"
+    audio_opus = "audio_opus"
+    audio_audio_webm = "audio_audio_webm"
 
-    mp4 = "mp4"
-    mkv = "mkv"
-    avi = "avi"
-    mov = "mov"
+    video_mp4 = "video_mp4"
+    video_mkv = "video_mkv"
+    video_avi = "video_avi"
+    video_mov = "video_mov"
     video_webm = "video_webm"
 
     undefined = "undefined"
