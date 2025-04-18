@@ -15,7 +15,7 @@ class FileType(str, Enum):
     audio_aac = "audio_aac"
     audio_m4a = "audio_m4a"
     audio_opus = "audio_opus"
-    audio_audio_webm = "audio_audio_webm"
+    audio_webm = "audio_webm"
 
     video_mp4 = "video_mp4"
     video_mkv = "video_mkv"
