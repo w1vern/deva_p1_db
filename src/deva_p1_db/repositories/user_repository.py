@@ -35,6 +35,13 @@ class UserRepository:
         if not check_password_hash(user.hashed_password, password):
             return None
         return user
+    
+    async def update_credentials(self, user: User, login: str | None = None, password: str | None = None) -> None:
+        if login is not None:
+            user.login = login
+        if password is not None:
+            user.hashed_password = generate_password_hash(password)
+        await self.session.flush()
 
     async def update_secret(self, user: User) -> None:
         user.secret = token_urlsafe(32)
