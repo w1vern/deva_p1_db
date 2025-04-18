@@ -15,6 +15,7 @@ class FileRepository:
     async def create(self,
                      user_file_name: str,
                      file_type: str,
+                     user: User,
                      project: Project,
                      task: Task | None = None, 
                      created_date: datetime | None = None,
@@ -32,6 +33,7 @@ class FileRepository:
                     created_date=created_date,
                     last_modified_date=last_modified_date,
                     file_type=file_type,
+                    user_id=user.id,
                     project_id=project.id,
                     task_id = task_id)
         self.session.add(file)
@@ -44,6 +46,10 @@ class FileRepository:
     
     async def get_by_project(self, project: Project) -> list[File]:
         stmt = select(File).where(File.project_id == project.id)
+        return list((await self.session.scalars(stmt)).all())
+    
+    async def get_by_user(self, user: User) -> list[File]:
+        stmt = select(File).where(File.user_id == user.id)
         return list((await self.session.scalars(stmt)).all())
     
     async def get_by_task(self, task: Task) -> list[File]:
