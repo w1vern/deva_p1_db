@@ -35,6 +35,10 @@ class ProjectRepository:
     async def get_by_id(self, project_id: UUID) -> Optional[Project]:
         stmt = select(Project).where(Project.id == project_id)
         return await self.session.scalar(stmt)
+    
+    async def get_by_user(self, user: User) -> list[Project]:
+        stmt = select(Project).where(Project.holder_id == user.id)
+        return list((await self.session.scalars(stmt)).all())
 
     async def update(self,
                      project: Project,

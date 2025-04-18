@@ -1,6 +1,6 @@
 
 
-from typing import Optional, Sequence
+from typing import Optional
 from uuid import UUID
 
 from sqlalchemy import select
@@ -31,19 +31,19 @@ class TaskRepository:
         stmt = select(Task).where(Task.id == task_id)
         return await self.session.scalar(stmt)
 
-    async def get_by_project(self, project: Project) -> Sequence[Task]:
+    async def get_by_project(self, project: Project) -> list[Task]:
         stmt = select(Task).where(Task.project_id == project.id)
-        return (await self.session.scalars(stmt)).all()
+        return list((await self.session.scalars(stmt)).all())
 
-    async def get_by_user(self, user: User) -> Sequence[Task]:
+    async def get_by_user(self, user: User) -> list[Task]:
         stmt = select(Task).where(Task.user_id == user.id)
-        return (await self.session.scalars(stmt)).all()
+        return list((await self.session.scalars(stmt)).all())
 
-    async def get_by_origin_file(self, origin_file: File) -> Sequence[Task]:
+    async def get_by_origin_file(self, origin_file: File) -> list[Task]:
         stmt = select(Task).where(Task.origin_file_id == origin_file.id)
-        return (await self.session.scalars(stmt)).all()
+        return list((await self.session.scalars(stmt)).all())
 
-    async def get_by_project_and_user(self, project: Project, user: User) -> Sequence[Task]:
+    async def get_by_project_and_user(self, project: Project, user: User) -> list[Task]:
         stmt = select(Task).where(Task.project_id ==
                                   project.id).where(Task.user_id == user.id)
-        return (await self.session.scalars(stmt)).all()
+        return list((await self.session.scalars(stmt)).all())

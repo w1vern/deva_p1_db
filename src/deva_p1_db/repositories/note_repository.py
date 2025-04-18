@@ -1,6 +1,6 @@
 
 
-from typing import Optional, Sequence
+from typing import Optional
 from uuid import UUID
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -26,9 +26,9 @@ class NoteRepository:
         stmt = select(Note).where(Note.id == note_id)
         return await self.session.scalar(stmt)
 
-    async def get_by_file(self, file: File) -> Sequence[Note]:
+    async def get_by_file(self, file: File) -> list[Note]:
         stmt = select(Note).where(Note.file_id == file.id)
-        return (await self.session.scalars(stmt)).all()
+        return list((await self.session.scalars(stmt)).all())
 
     async def delete(self, note: Note) -> None:
         await self.session.delete(note)

@@ -1,6 +1,6 @@
 
 
-from typing import Optional, Sequence
+from typing import Optional
 
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -31,12 +31,12 @@ class InvitedUsersRepository:
             InvitedUsers.project_id == project.id)
         return await self.session.scalar(stmt)
 
-    async def get_by_user(self, user: User) -> Sequence[InvitedUsers]:
+    async def get_by_user(self, user: User) -> list[InvitedUsers]:
         stmt = select(InvitedUsers).where(
             InvitedUsers.user_id == user.id)
-        return (await self.session.scalars(stmt)).all()
+        return list((await self.session.scalars(stmt)).all())
 
-    async def get_by_project(self, project: Project) -> Sequence[InvitedUsers]:
+    async def get_by_project(self, project: Project) -> list[InvitedUsers]:
         stmt = select(InvitedUsers).where(
             InvitedUsers.project_id == project.id)
-        return (await self.session.scalars(stmt)).all()
+        return list((await self.session.scalars(stmt)).all())

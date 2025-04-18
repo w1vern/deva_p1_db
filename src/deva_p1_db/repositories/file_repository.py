@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import Optional, Sequence
+from typing import Optional
 from uuid import UUID
 
 from sqlalchemy import select
@@ -43,17 +43,17 @@ class FileRepository:
         stmt = select(File).where(File.id == file_id)
         return await self.session.scalar(stmt)
     
-    async def get_by_project(self, project: Project) -> Sequence[File]:
+    async def get_by_project(self, project: Project) -> list[File]:
         stmt = select(File).where(File.project_id == project.id)
-        return (await self.session.scalars(stmt)).all()
+        return list((await self.session.scalars(stmt)).all())
     
-    async def get_by_file_type(self, file_type: str) -> Sequence[File]:
+    async def get_by_file_type(self, file_type: str) -> list[File]:
         stmt = select(File).where(File.file_type == file_type)
-        return (await self.session.scalars(stmt)).all()
+        return list((await self.session.scalars(stmt)).all())
     
-    async def get_by_user_file_name(self, user_file_name: str) -> Sequence[File]:
+    async def get_by_user_file_name(self, user_file_name: str) -> list[File]:
         stmt = select(File).where(File.user_file_name == user_file_name)
-        return (await self.session.scalars(stmt)).all()
+        return list((await self.session.scalars(stmt)).all())
     
     async def delete(self, file: File) -> None:
         await self.session.delete(file)
