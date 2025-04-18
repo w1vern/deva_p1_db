@@ -1,10 +1,13 @@
 
+from typing import Optional
 from pydantic import BaseModel
 from uuid import UUID
 
 
-class TaskInput(BaseModel):
+class TaskToAi(BaseModel):
     task_id: UUID
 
-class TaskOutput(BaseModel):
+class TaskToBack(BaseModel):
     task_id: UUID
+    done: bool
+    status: Optional[str]
