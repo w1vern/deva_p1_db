@@ -11,6 +11,6 @@ class User(Base):
     __tablename__ = "users"
 
     id: Mapped[UUID] = mapped_column(primary_key=True, default=uuid4)
-    login: Mapped[str]
+    login: Mapped[str] = mapped_column(unique=True)
     hashed_password: Mapped[str]
     secret: Mapped[str]
