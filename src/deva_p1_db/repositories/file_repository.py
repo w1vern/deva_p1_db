@@ -54,3 +54,7 @@ class FileRepository:
     async def get_by_user_file_name(self, user_file_name: str) -> Sequence[File]:
         stmt = select(File).where(File.user_file_name == user_file_name)
         return (await self.session.scalars(stmt)).all()
+    
+    async def delete(self, file: File) -> None:
+        await self.session.delete(file)
+        await self.session.flush()

@@ -15,7 +15,7 @@ class ProjectRepository:
     async def create(self,
                      name: str,
                      description: str,
-                     holder_id: UUID,
+                     holder: User,
                      created_date: datetime | None = None,
                      last_modified_date: datetime | None = None
                      ) -> Optional[Project]:
@@ -25,7 +25,7 @@ class ProjectRepository:
             last_modified_date = datetime.now()
         project = Project(name=name,
                           description=description,
-                          holder_id=holder_id,
+                          holder_id=holder.id,
                           created_date=created_date,
                           last_modified_date=last_modified_date)
         self.session.add(project)
@@ -48,4 +48,8 @@ class ProjectRepository:
             project.description = description
         if last_modified_date is not None:
             project.last_modified_date = last_modified_date
+        await self.session.flush()
+
+    async def delete(self, project: Project) -> None:
+        await self.session.delete(project)
         await self.session.flush()
