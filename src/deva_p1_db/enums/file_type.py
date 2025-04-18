@@ -23,4 +23,6 @@ class FileType(str, Enum):
     mov = "mov"
     video_webm = "video_webm"
 
+    undefined = "undefined"
+
 
