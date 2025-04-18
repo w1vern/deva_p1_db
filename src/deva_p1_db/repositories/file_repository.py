@@ -6,7 +6,6 @@ from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from deva_p1_db.models import *
-from deva_p1_db.models.task import Task
 
 
 class FileRepository:
@@ -45,6 +44,10 @@ class FileRepository:
     
     async def get_by_project(self, project: Project) -> list[File]:
         stmt = select(File).where(File.project_id == project.id)
+        return list((await self.session.scalars(stmt)).all())
+    
+    async def get_by_task(self, task: Task) -> list[File]:
+        stmt = select(File).where(File.task_id == task.id)
         return list((await self.session.scalars(stmt)).all())
     
     async def get_by_file_type(self, file_type: str) -> list[File]:

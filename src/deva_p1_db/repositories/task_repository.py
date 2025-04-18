@@ -42,10 +42,6 @@ class TaskRepository:
     async def get_by_origin_file(self, origin_file: File) -> list[Task]:
         stmt = select(Task).where(Task.origin_file_id == origin_file.id)
         return list((await self.session.scalars(stmt)).all())
-    
-    async def get_by_task(self, task: Task) -> list[File]:
-        stmt = select(File).where(File.task_id == task.id)
-        return list((await self.session.scalars(stmt)).all())
 
     async def get_by_project_and_user(self, project: Project, user: User) -> list[Task]:
         stmt = select(Task).where(Task.project_id ==
