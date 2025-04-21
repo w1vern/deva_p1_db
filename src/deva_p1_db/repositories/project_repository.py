@@ -23,6 +23,10 @@ class ProjectRepository:
             created_date = datetime.now()
         if last_modified_date is None:
             last_modified_date = datetime.now()
+        projects = await self.get_by_user(holder)
+        for project in projects:
+            if project.name == name:
+                raise Exception("Project with this name already exists")
         project = Project(name=name,
                           description=description,
                           holder_id=holder.id,

@@ -10,7 +10,6 @@ from deva_p1_db.models.user import User
 
 from deva_p1_db.models.base import Base
 
-
 class Project(Base):
     __tablename__ = "projects"
 
