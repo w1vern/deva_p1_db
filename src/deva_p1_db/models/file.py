@@ -8,6 +8,7 @@ from sqlalchemy import ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy.sql import func
 
+from deva_p1_db.enums.file_type import resolve_file_type
 from deva_p1_db.models.base import Base
 from deva_p1_db.models.task import Task
 from deva_p1_db.models.user import User
@@ -48,4 +49,9 @@ class File(Base):
     project: Mapped["Project"] = relationship(lazy="selectin", foreign_keys=[
                                               project_id], cascade="all, delete")
     task: Mapped[Task] = relationship(lazy="selectin", foreign_keys=[task_id])
+
+    @property
+    def minio_name(self) -> str:
+        return f"{self.id}{resolve_file_type(self.file_type).extension}"
+
 
