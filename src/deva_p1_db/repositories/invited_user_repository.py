@@ -8,7 +8,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from deva_p1_db.models import InvitedUser, Project, User
 
 
-class InvitedUsersRepository:
+class InvitedUserRepository:
     def __init__(self, session: AsyncSession):
         self.session = session
 
