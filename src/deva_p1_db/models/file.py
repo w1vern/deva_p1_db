@@ -16,7 +16,7 @@ class File(Base):
     __tablename__ = "files"
 
     id: Mapped[UUID] = mapped_column(primary_key=True, default=uuid4)
-    user_file_name: Mapped[str]
+    file_name: Mapped[str]
     created_date: Mapped[datetime]
     last_modified_date: Mapped[datetime]
     file_type: Mapped[str]
@@ -30,4 +30,4 @@ class File(Base):
 
     user: Mapped[User] = relationship(lazy="selectin", foreign_keys=[user_id])
     project: Mapped["Project"] = relationship(lazy="selectin", foreign_keys=[project_id])
-    task: Mapped["Task"] = relationship(lazy="selectin", foreign_keys=[task_id])
+    task: Mapped[Task] = relationship(lazy="selectin", foreign_keys=[task_id])
