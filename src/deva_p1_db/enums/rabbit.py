@@ -1,7 +1,8 @@
 
 
-from .task_type import TaskType
 from faststream.rabbit import RabbitQueue
+
+from .task_type import TaskType
 
 
 class RabbitQueuesToAi:

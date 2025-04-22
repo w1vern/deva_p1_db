@@ -5,7 +5,7 @@ from typing import Optional
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from deva_p1_db.models import *
+from deva_p1_db.models import InvitedUser, Project, User
 
 
 class InvitedUsersRepository:
@@ -16,27 +16,25 @@ class InvitedUsersRepository:
                      user: User,
                      project: Project,
                      accepted: bool = False,
-                     rights_level: int = 0
-                     ) -> Optional[InvitedUsers]:
-        invited_user = InvitedUsers(user_id=user.id,
-                                    project_id=project.id,
-                                    accepted=accepted,
-                                    rights_level=rights_level)
+                     ) -> Optional[InvitedUser]:
+        invited_user = InvitedUser(user_id=user.id,
+                                   project_id=project.id,
+                                   accepted=accepted)
         self.session.add(invited_user)
         await self.session.flush()
         return await self.get_by_id(user, project)
 
-    async def get_by_id(self, user: User, project: Project) -> Optional[InvitedUsers]:
-        stmt = select(InvitedUsers).where(InvitedUsers.user_id == user.id).where(
-            InvitedUsers.project_id == project.id)
+    async def get_by_id(self, user: User, project: Project) -> Optional[InvitedUser]:
+        stmt = select(InvitedUser).where(InvitedUser.user_id == user.id).where(
+            InvitedUser.project_id == project.id)
         return await self.session.scalar(stmt)
 
-    async def get_by_user(self, user: User) -> list[InvitedUsers]:
-        stmt = select(InvitedUsers).where(
-            InvitedUsers.user_id == user.id)
+    async def get_by_user(self, user: User) -> list[InvitedUser]:
+        stmt = select(InvitedUser).where(
+            InvitedUser.user_id == user.id)
         return list((await self.session.scalars(stmt)).all())
 
-    async def get_by_project(self, project: Project) -> list[InvitedUsers]:
-        stmt = select(InvitedUsers).where(
-            InvitedUsers.project_id == project.id)
+    async def get_by_project(self, project: Project) -> list[InvitedUser]:
+        stmt = select(InvitedUser).where(
+            InvitedUser.project_id == project.id)
         return list((await self.session.scalars(stmt)).all())

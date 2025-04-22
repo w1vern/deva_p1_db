@@ -6,7 +6,7 @@ from uuid import UUID
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from deva_p1_db.models import *
+from deva_p1_db.models import Project, Task, User
 
 
 class TaskRepository:
@@ -17,12 +17,10 @@ class TaskRepository:
                      task_type: str,
                      project: Project,
                      user: User,
-                     origin_file: File
                      ) -> Optional[Task]:
         task = Task(task_type=task_type,
                     project_id=project.id,
-                    user_id=user.id,
-                    origin_file_id=origin_file.id)
+                    user_id=user.id)
         self.session.add(task)
         await self.session.flush()
         return await self.get_by_id(task.id)
@@ -37,10 +35,6 @@ class TaskRepository:
 
     async def get_by_user(self, user: User) -> list[Task]:
         stmt = select(Task).where(Task.user_id == user.id)
-        return list((await self.session.scalars(stmt)).all())
-
-    async def get_by_origin_file(self, origin_file: File) -> list[Task]:
-        stmt = select(Task).where(Task.origin_file_id == origin_file.id)
         return list((await self.session.scalars(stmt)).all())
 
     async def get_by_project_and_user(self, project: Project, user: User) -> list[Task]:

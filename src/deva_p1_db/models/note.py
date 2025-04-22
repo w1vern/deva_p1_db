@@ -1,10 +1,11 @@
 
 
-from sqlalchemy import ForeignKey
-from deva_p1_db.models.base import Base
-from sqlalchemy.orm import Mapped, mapped_column, relationship
 from uuid import UUID, uuid4
 
+from sqlalchemy import ForeignKey
+from sqlalchemy.orm import Mapped, mapped_column, relationship
+
+from deva_p1_db.models.base import Base
 from deva_p1_db.models.file import File
 
 

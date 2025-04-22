@@ -8,7 +8,7 @@ from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 from werkzeug.security import check_password_hash, generate_password_hash
 
-from deva_p1_db.models import *
+from deva_p1_db.models import User
 
 
 class UserRepository:
