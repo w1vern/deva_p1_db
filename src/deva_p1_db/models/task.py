@@ -1,6 +1,5 @@
 
 
-
 from typing import Optional
 from uuid import UUID, uuid4
 
@@ -26,10 +25,11 @@ class Task(Base):
 
     project_id: Mapped[UUID] = mapped_column(ForeignKey("projects.id"))
     user_id: Mapped[UUID] = mapped_column(ForeignKey("users.id"))
-    origin_task_id: Mapped[Optional[UUID]] = mapped_column(ForeignKey("tasks.id"))
-    
-    project: Mapped[Project] = relationship(lazy="selectin", foreign_keys=[project_id])
-    user: Mapped[User] = relationship(lazy="selectin", foreign_keys=[user_id])
-    origin_task: Mapped["Task"] = relationship(lazy="selectin", foreign_keys=[origin_task_id])
+    origin_task_id: Mapped[Optional[UUID]
+                           ] = mapped_column(ForeignKey("tasks.id"))
 
-    
+    project: Mapped[Project] = relationship(lazy="selectin", foreign_keys=[
+                                            project_id], cascade="all, delete")
+    user: Mapped[User] = relationship(lazy="selectin", foreign_keys=[user_id])
+    origin_task: Mapped["Task"] = relationship(
+        lazy="selectin", foreign_keys=[origin_task_id])

@@ -28,7 +28,7 @@ class Project(Base):
     transcription_id: Mapped[Optional[UUID]] = mapped_column(ForeignKey("files.id"), default=None)
     summary_id: Mapped[Optional[UUID]] = mapped_column(ForeignKey("files.id"), default=None)
     
-    holder: Mapped[User] = relationship(lazy="selectin", foreign_keys=[holder_id])
+    holder: Mapped[User] = relationship(lazy="selectin", foreign_keys=[holder_id], cascade="all, delete")
 
     origin_file: Mapped["File"] = relationship(lazy="selectin", foreign_keys=[origin_file_id])
     transcription: Mapped["File"] = relationship(lazy="selectin", foreign_keys=[transcription_id])

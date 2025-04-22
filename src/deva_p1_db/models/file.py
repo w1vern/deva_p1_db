@@ -1,7 +1,7 @@
 
 
 from datetime import datetime
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Optional
 from uuid import UUID, uuid4
 
 from sqlalchemy import ForeignKey
@@ -14,7 +14,6 @@ from deva_p1_db.models.user import User
 
 if TYPE_CHECKING:
     from deva_p1_db.models.project import Project
-    from deva_p1_db.models.file_metadata import FileMetadata
 
 
 class File(Base):
@@ -28,17 +27,17 @@ class File(Base):
     file_type: Mapped[str]
     user_id: Mapped[UUID] = mapped_column(ForeignKey("users.id"))
 
+    metadata_is_hide: Mapped[Optional[bool]]
+    metadata_timecode: Mapped[Optional[float]]
+    metadata_text: Mapped[Optional[str]]
+
     task_id: Mapped[UUID] = mapped_column(ForeignKey("tasks.id",
                                                      use_alter=True,
                                                      name="file_metadata_id",
                                                      deferrable=True,
                                                      initially="DEFERRED"))
 
-    file_metadata_id: Mapped[UUID] = mapped_column(ForeignKey("files_metadata.id",
-                                                              use_alter=True,
-                                                              name="file_metadata_id",
-                                                              deferrable=True,
-                                                              initially="DEFERRED"))
+
     project_id: Mapped[UUID] = mapped_column(ForeignKey("projects.id",
                                                         use_alter=True,
                                                         name="project_id",
@@ -49,5 +48,4 @@ class File(Base):
     project: Mapped["Project"] = relationship(lazy="selectin", foreign_keys=[
                                               project_id], cascade="all, delete")
     task: Mapped[Task] = relationship(lazy="selectin", foreign_keys=[task_id])
-    file_metadata: Mapped["FileMetadata"] = relationship(
-        lazy="selectin", foreign_keys=[file_metadata_id])
+
