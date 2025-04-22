@@ -4,6 +4,7 @@ from uuid import UUID
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from deva_p1_db.enums.file_type import FileCategory, resolve_file_type
 from deva_p1_db.models import File, Project, Task, User
 
 
@@ -61,8 +62,13 @@ class FileRepository:
         await self.session.delete(file)
         await self.session.flush()
 
-    async def delete_project(self, project: Project) -> None:
-        files = await self.get_by_project(project)
-        for file in files:
-            await self.delete(file)
+    async def get_by_project_and_category(self, project: Project, category: str) -> list[File]:
+        stmt = select(File).where(File.project_id == project.id)
+        project_files = list((await self.session.scalars(stmt)).all())
+        return [file for file in project_files if resolve_file_type(file.file_type)]
+    
+    async def get_active_images(self, project: Project) -> list[File]:
+        _ = await self.get_by_project_and_category(project, FileCategory.image.value)
+        return [file for file in _ if file.file_metadata.is_hide == False]
+
         

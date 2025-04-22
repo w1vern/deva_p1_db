@@ -22,5 +22,5 @@ class FileMetadata(Base):
     timecode: Mapped[float]
     text: Mapped[str]
 
-    file: Mapped[File] = relationship(lazy="selectin", foreign_keys=[file_id])
+    file: Mapped["File"] = relationship(lazy="selectin", foreign_keys=[file_id])
 

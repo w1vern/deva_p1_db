@@ -30,9 +30,9 @@ class Project(Base):
     
     holder: Mapped[User] = relationship(lazy="selectin", foreign_keys=[holder_id])
 
-    origin_file: Mapped[File] = relationship(lazy="selectin", foreign_keys=[origin_file_id])
-    transcription: Mapped[File] = relationship(lazy="selectin", foreign_keys=[transcription_id])
-    summary: Mapped[File] = relationship(lazy="selectin", foreign_keys=[summary_id])
+    origin_file: Mapped["File"] = relationship(lazy="selectin", foreign_keys=[origin_file_id])
+    transcription: Mapped["File"] = relationship(lazy="selectin", foreign_keys=[transcription_id])
+    summary: Mapped["File"] = relationship(lazy="selectin", foreign_keys=[summary_id])
 
 
 
