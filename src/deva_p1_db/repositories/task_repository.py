@@ -17,6 +17,7 @@ class TaskRepository:
                      task_type: str,
                      project: Project,
                      user: User,
+                     prompt: str = "",
                      origin_task: Task | None = None
                      ) -> Optional[Task]:
         task = Task(task_type=task_type,
