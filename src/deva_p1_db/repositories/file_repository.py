@@ -5,7 +5,7 @@ from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from deva_p1_db.enums.file_type import FileCategory, resolve_file_type
-from deva_p1_db.models import File, Project, Task, User
+from deva_p1_db.models import File, Project, Task, User, FileMetadata
 
 
 class FileRepository:
@@ -17,7 +17,7 @@ class FileRepository:
                      file_type: str,
                      user: User,
                      project: Project,
-                     file_metadata: str = "",
+                     file_metadata: FileMetadata,
                      task: Task | None = None
                      ) -> Optional[File]:
         if task is None:

@@ -1,16 +1,17 @@
 
 
 
-from typing import TYPE_CHECKING
 from uuid import UUID, uuid4
+from typing import TYPE_CHECKING
 
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-if TYPE_CHECKING:
-    from deva_p1_db.models.file import File
+
 
 from deva_p1_db.models.base import Base
+if TYPE_CHECKING:
+    from deva_p1_db.models.file import File
 
 
 class FileMetadata(Base):

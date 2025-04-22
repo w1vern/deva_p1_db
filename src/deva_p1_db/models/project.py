@@ -1,7 +1,7 @@
 
 
 from datetime import datetime
-from typing import TYPE_CHECKING, Optional
+from typing import Optional, TYPE_CHECKING
 from uuid import UUID, uuid4
 
 from sqlalchemy import ForeignKey
@@ -10,9 +10,9 @@ from sqlalchemy.sql import func
 
 from deva_p1_db.models.base import Base
 from deva_p1_db.models.user import User
-
 if TYPE_CHECKING:
     from deva_p1_db.models.file import File
+
 
 class Project(Base):
     __tablename__ = "projects"

@@ -17,10 +17,12 @@ class TaskRepository:
                      task_type: str,
                      project: Project,
                      user: User,
+                     origin_task: Task | None = None
                      ) -> Optional[Task]:
         task = Task(task_type=task_type,
                     project_id=project.id,
-                    user_id=user.id)
+                    user_id=user.id,
+                    origin_task_id=origin_task.id if origin_task else None)
         self.session.add(task)
         await self.session.flush()
         return await self.get_by_id(task.id)
@@ -40,4 +42,8 @@ class TaskRepository:
     async def get_by_project_and_user(self, project: Project, user: User) -> list[Task]:
         stmt = select(Task).where(Task.project_id ==
                                   project.id).where(Task.user_id == user.id)
+        return list((await self.session.scalars(stmt)).all())
+    
+    async def get_by_origin_task(self, task: Task) -> list[Task]:
+        stmt = select(Task).where(Task.origin_task_id == task.id)
         return list((await self.session.scalars(stmt)).all())

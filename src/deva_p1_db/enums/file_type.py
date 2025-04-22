@@ -2,8 +2,6 @@ from dataclasses import dataclass
 from enum import Enum
 from typing import Optional
 
-from click import File
-
 
 class FileCategory(str, Enum):
     audio = "audio"
