@@ -15,6 +15,9 @@ class RabbitQueuesToAi:
     frames_extract_task = RabbitQueue(
         name=f"{TaskType.frames_extract.value}_task"
     )
+    summary_edit_task = RabbitQueue(
+        name=f"{TaskType.summary_edit.value}_task"
+    )
 
 class RabbitQueuesToBack:
     done_task = RabbitQueue(
