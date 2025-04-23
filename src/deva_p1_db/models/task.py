@@ -1,6 +1,6 @@
 
 
-
+from typing import Optional
 from uuid import UUID, uuid4
 
 from sqlalchemy import ForeignKey
@@ -21,10 +21,15 @@ class Task(Base):
     id: Mapped[UUID] = mapped_column(primary_key=True, default=uuid4)
     done: Mapped[bool] = mapped_column(default=False)
     task_type: Mapped[str]
+    prompt: Mapped[str]
+
     project_id: Mapped[UUID] = mapped_column(ForeignKey("projects.id"))
     user_id: Mapped[UUID] = mapped_column(ForeignKey("users.id"))
-    
-    project: Mapped[Project] = relationship(lazy="selectin", foreign_keys=[project_id])
-    user: Mapped[User] = relationship(lazy="selectin", foreign_keys=[user_id])
+    origin_task_id: Mapped[Optional[UUID]
+                           ] = mapped_column(ForeignKey("tasks.id"))
 
-    
+    project: Mapped[Project] = relationship(lazy="selectin", foreign_keys=[
+                                            project_id], cascade="all, delete")
+    user: Mapped[User] = relationship(lazy="selectin", foreign_keys=[user_id])
+    origin_task: Mapped["Task"] = relationship(
+        lazy="selectin", foreign_keys=[origin_task_id])

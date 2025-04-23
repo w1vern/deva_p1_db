@@ -1,9 +1,7 @@
+
 from dataclasses import dataclass
 from enum import Enum
 from typing import Optional
-
-from click import File
-
 
 class FileCategory(str, Enum):
     audio = "audio"
@@ -61,10 +59,11 @@ LOOKUP_INDEXES = {
 }
 
 
-def resolve_file_type(value: str, type_hint: Optional[str] = None) -> Optional[FileType]:
+def resolve_file_type(value: str, type_hint: Optional[str] = None) -> FileType:
     if type_hint:
-        return LOOKUP_INDEXES.get(type_hint, {}).get(value)
+        res = LOOKUP_INDEXES.get(type_hint, {}).get(value)
+        return res if res else FileTypes.undefined
     for index in LOOKUP_INDEXES.values():
         if value in index:
             return index[value]
-    return None
+    return FileTypes.undefined
