@@ -15,6 +15,7 @@ class FileRepository:
     async def create(self,
                      user_file_name: str,
                      file_type: str,
+                     file_size: int,
                      user: User,
                      project: Project,
                      task: Task | None = None,
@@ -28,11 +29,12 @@ class FileRepository:
             task_id = task.id
         file = File(user_file_name=user_file_name,
                     file_type=file_type,
+                    file_size=file_size,
                     user_id=user.id,
                     project_id=project.id,
                     task_id=task_id,
                     metadata_is_hide=metadata_is_hide,
-                    metadata_timecode=metadata_timecode, 
+                    metadata_timecode=metadata_timecode,
                     metadata_text=metadata_text)
         self.session.add(file)
         await self.session.flush()
@@ -70,15 +72,15 @@ class FileRepository:
         stmt = select(File).where(File.project_id == project.id)
         project_files = list((await self.session.scalars(stmt)).all())
         return [file for file in project_files if resolve_file_type(file.file_type)]
-    
+
     async def get_active_images(self, project: Project) -> list[File]:
         _ = await self.get_by_project_and_category(project, FileCategory.image.value)
         return [file for file in _ if file.metadata_is_hide == True]
-    
-    async def update_metadata(self, 
-                              file: File, 
-                              is_hide: bool | None = None, 
-                              timecode: float | None = None, 
+
+    async def update_metadata(self,
+                              file: File,
+                              is_hide: bool | None = None,
+                              timecode: float | None = None,
                               text: str | None = None
                               ) -> None:
         if is_hide is not None:
@@ -88,5 +90,3 @@ class FileRepository:
         if text is not None:
             file.metadata_text = text
         await self.session.flush()
-
-        

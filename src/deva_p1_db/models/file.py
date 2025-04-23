@@ -26,6 +26,7 @@ class File(Base):
     last_modified_date: Mapped[datetime] = mapped_column(
         server_default=func.now(), onupdate=func.now())
     file_type: Mapped[str]
+    file_size: Mapped[int]
     user_id: Mapped[UUID] = mapped_column(ForeignKey("users.id"))
 
     metadata_is_hide: Mapped[Optional[bool]]
