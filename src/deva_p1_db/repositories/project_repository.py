@@ -59,7 +59,7 @@ class ProjectRepository:
         await self.session.flush()
 
     async def frames_extracted_done(self, project: Project) -> None:
-        project.frames_extracted_done = True
+        project.frames_extract_done = True
         await self.session.flush()
 
     async def add_transcription_file(self, project: Project, file: File) -> None:
