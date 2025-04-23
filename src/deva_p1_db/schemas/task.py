@@ -8,7 +8,9 @@ from pydantic import BaseModel
 class TaskToAi(BaseModel):
     task_id: UUID
 
-class TaskToBack(BaseModel):
+class TaskReadyToBack(BaseModel):
     task_id: UUID
-    done: bool
-    status: Optional[str]
+
+class TaskStatusToBack(BaseModel):
+    task_id: UUID
+    progress: float
