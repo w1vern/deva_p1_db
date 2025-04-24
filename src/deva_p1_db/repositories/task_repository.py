@@ -19,7 +19,7 @@ class TaskRepository:
                      user: User,
                      prompt: str = "",
                      origin_task: Task | None = None
-                     ) -> Optional[Task]:
+                     ) -> Task | None:
         task = Task(task_type=task_type,
                     project_id=project.id,
                     user_id=user.id,
@@ -28,7 +28,7 @@ class TaskRepository:
         await self.session.flush()
         return await self.get_by_id(task.id)
 
-    async def get_by_id(self, task_id: UUID) -> Optional[Task]:
+    async def get_by_id(self, task_id: UUID) -> Task | None:
         stmt = select(Task).where(Task.id == task_id)
         return await self.session.scalar(stmt)
 

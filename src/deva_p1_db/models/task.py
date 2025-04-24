@@ -25,7 +25,7 @@ class Task(Base):
 
     project_id: Mapped[UUID] = mapped_column(ForeignKey("projects.id"))
     user_id: Mapped[UUID] = mapped_column(ForeignKey("users.id"))
-    origin_task_id: Mapped[Optional[UUID]
+    origin_task_id: Mapped[UUID | None
                            ] = mapped_column(ForeignKey("tasks.id"))
 
     project: Mapped[Project] = relationship(lazy="selectin", foreign_keys=[

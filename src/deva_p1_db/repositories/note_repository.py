@@ -19,7 +19,7 @@ class NoteRepository:
                      file: File,
                      start_time_code: float,
                      end_time_code: float = 0
-                     ) -> Optional[Note]:
+                     ) -> Note | None:
         if end_time_code == 0:
             end_time_code = start_time_code
         note = Note(text=text,
@@ -30,7 +30,7 @@ class NoteRepository:
         await self.session.flush()
         return await self.get_by_id(note.id)
 
-    async def get_by_id(self, note_id: UUID) -> Optional[Note]:
+    async def get_by_id(self, note_id: UUID) -> Note | None:
         stmt = select(Note).where(Note.id == note_id)
         return await self.session.scalar(stmt)
 

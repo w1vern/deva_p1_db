@@ -29,9 +29,9 @@ class File(Base):
     file_size: Mapped[int]
     user_id: Mapped[UUID] = mapped_column(ForeignKey("users.id"))
 
-    metadata_is_hide: Mapped[Optional[bool]]
-    metadata_timecode: Mapped[Optional[float]]
-    metadata_text: Mapped[Optional[str]]
+    metadata_is_hide: Mapped[bool | None]
+    metadata_timecode: Mapped[float | None]
+    metadata_text: Mapped[str | None]
 
     task_id: Mapped[UUID] = mapped_column(ForeignKey("tasks.id",
                                                      use_alter=True,

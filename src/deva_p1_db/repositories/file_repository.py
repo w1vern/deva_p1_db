@@ -22,7 +22,7 @@ class FileRepository:
                      metadata_is_hide: bool | None = None,
                      metadata_timecode: float | None = None,
                      metadata_text: str | None = None
-                     ) -> Optional[File]:
+                     ) -> File | None:
         if task is None:
             task_id = UUID(int=0)
         else:
@@ -40,7 +40,7 @@ class FileRepository:
         await self.session.flush()
         return await self.get_by_id(file.id)
 
-    async def get_by_id(self, file_id: UUID) -> Optional[File]:
+    async def get_by_id(self, file_id: UUID) -> File | None:
         stmt = select(File).where(File.id == file_id)
         return await self.session.scalar(stmt)
 

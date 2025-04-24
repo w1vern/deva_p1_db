@@ -16,7 +16,7 @@ class InvitedUserRepository:
                      user: User,
                      project: Project,
                      accepted: bool = False,
-                     ) -> Optional[InvitedUser]:
+                     ) -> InvitedUser | None:
         invited_user = InvitedUser(user_id=user.id,
                                    project_id=project.id,
                                    accepted=accepted)
@@ -24,7 +24,7 @@ class InvitedUserRepository:
         await self.session.flush()
         return await self.get_by_id(user, project)
 
-    async def get_by_id(self, user: User, project: Project) -> Optional[InvitedUser]:
+    async def get_by_id(self, user: User, project: Project) -> InvitedUser | None:
         stmt = select(InvitedUser).where(InvitedUser.user_id == user.id).where(
             InvitedUser.project_id == project.id)
         return await self.session.scalar(stmt)

@@ -15,7 +15,7 @@ class ProjectRepository:
                      name: str,
                      holder: User,
                      description: str = ""
-                     ) -> Optional[Project]:
+                     ) -> Project | None:
         projects = await self.get_by_user(holder)
         for project in projects:
             if project.name == name:
@@ -27,7 +27,7 @@ class ProjectRepository:
         await self.session.flush()
         return await self.get_by_id(project.id)
 
-    async def get_by_id(self, project_id: UUID) -> Optional[Project]:
+    async def get_by_id(self, project_id: UUID) -> Project | None:
         stmt = select(Project).where(Project.id == project_id)
         return await self.session.scalar(stmt)
     

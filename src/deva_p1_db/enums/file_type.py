@@ -3,6 +3,7 @@ from dataclasses import dataclass
 from enum import Enum
 from typing import Optional
 
+
 class FileCategory(str, Enum):
     audio = "audio"
     video = "video"
@@ -59,7 +60,7 @@ LOOKUP_INDEXES = {
 }
 
 
-def resolve_file_type(value: str, type_hint: Optional[str] = None) -> FileType:
+def resolve_file_type(value: str, type_hint: str | None = None) -> FileType:
     if type_hint:
         res = LOOKUP_INDEXES.get(type_hint, {}).get(value)
         return res if res else FileTypes.undefined
