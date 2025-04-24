@@ -80,7 +80,7 @@ class FileRepository:
 
     async def get_active_images(self, project: Project) -> list[File]:
         _ = await self.get_by_project_and_category(project, FileCategory.image.value)
-        return [file for file in _ if file.metadata_is_hide == True]
+        return [file for file in _ if file.metadata_is_hide == False]
 
     async def update_metadata(self,
                               file: File,

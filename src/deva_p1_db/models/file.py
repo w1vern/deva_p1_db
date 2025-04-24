@@ -53,6 +53,6 @@ class File(Base):
 
     @property
     def minio_name(self) -> str:
-        return f"{self.id}{resolve_file_type(self.file_type).extension}"
+        return str(self.id)
 
 
