@@ -4,7 +4,7 @@ from datetime import datetime
 from typing import TYPE_CHECKING, Optional
 from uuid import UUID, uuid4
 
-from sqlalchemy import ForeignKey
+from sqlalchemy import ForeignKey, null
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy.sql import func
 
@@ -33,12 +33,12 @@ class File(Base):
     metadata_timecode: Mapped[float | None]
     metadata_text: Mapped[str | None]
 
-    task_id: Mapped[UUID] = mapped_column(ForeignKey("tasks.id",
-                                                     use_alter=True,
-                                                     name="file_metadata_id",
-                                                     deferrable=True,
-                                                     initially="DEFERRED"))
-
+    task_id: Mapped[UUID | None] = mapped_column(ForeignKey("tasks.id",
+                                                            use_alter=True,
+                                                            name="file_metadata_id",
+                                                            deferrable=True,
+                                                            initially="DEFERRED"),
+                                                 nullable=True)
 
     project_id: Mapped[UUID] = mapped_column(ForeignKey("projects.id",
                                                         use_alter=True,
@@ -49,10 +49,8 @@ class File(Base):
     user: Mapped[User] = relationship(lazy="selectin", foreign_keys=[user_id])
     project: Mapped["Project"] = relationship(lazy="selectin", foreign_keys=[
                                               project_id])
-    task: Mapped[Task] = relationship(lazy="selectin", foreign_keys=[task_id])
+    task: Mapped[Task | None] = relationship(lazy="selectin", foreign_keys=[task_id])
 
     @property
     def minio_name(self) -> str:
         return str(self.id)
-
-
