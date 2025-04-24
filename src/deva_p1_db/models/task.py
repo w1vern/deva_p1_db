@@ -27,4 +27,4 @@ class Task(Base):
                                             project_id])
     user: Mapped[User] = relationship(lazy="selectin", foreign_keys=[user_id])
     origin_task: Mapped["Task | None"] = relationship(
-        lazy="selectin", foreign_keys=[origin_task_id], remote_side="Task.id")
+        lazy="joined", foreign_keys=[origin_task_id], remote_side="Task.id")
