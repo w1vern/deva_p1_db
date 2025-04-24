@@ -48,7 +48,7 @@ class File(Base):
 
     user: Mapped[User] = relationship(lazy="selectin", foreign_keys=[user_id])
     project: Mapped["Project"] = relationship(lazy="selectin", foreign_keys=[
-                                              project_id], cascade="all, delete")
+                                              project_id])
     task: Mapped[Task] = relationship(lazy="selectin", foreign_keys=[task_id])
 
     @property

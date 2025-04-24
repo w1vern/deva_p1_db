@@ -18,4 +18,4 @@ class Note(Base):
     end_time_code: Mapped[float]
     file_id: Mapped[UUID] = mapped_column(ForeignKey("files.id"))
     
-    file: Mapped[File] = relationship(lazy="selectin", foreign_keys=[file_id], cascade="all, delete")
+    file: Mapped[File] = relationship(lazy="selectin", foreign_keys=[file_id])

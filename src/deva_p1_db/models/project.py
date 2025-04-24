@@ -30,7 +30,7 @@ class Project(Base):
     summary_id: Mapped[UUID | None] = mapped_column(ForeignKey("files.id"), default=None)
     frames_extract_done: Mapped[bool] = mapped_column(default=False)
     
-    holder: Mapped[User] = relationship(lazy="selectin", foreign_keys=[holder_id], cascade="all, delete")
+    holder: Mapped[User] = relationship(lazy="selectin", foreign_keys=[holder_id])
 
     origin_file: Mapped["File"] = relationship(lazy="selectin", foreign_keys=[origin_file_id])
     transcription: Mapped["File"] = relationship(lazy="selectin", foreign_keys=[transcription_id])
