@@ -1,4 +1,3 @@
-from typing import Optional
 from uuid import UUID
 
 from sqlalchemy import select
@@ -16,10 +15,8 @@ class ProjectRepository:
                      name: str,
                      description: str = ""
                      ) -> Project | None:
-        projects = await self.get_by_user(holder)
-        for project in projects:
-            if project.name == name:
-                raise Exception("Project with this name already exists")
+        if await self.get_by_user_and_name(holder, name) is not None:
+            raise Exception(f"Project with name {name} already exists for user {holder.id}")
         project = Project(name=name,
                           description=description,
                           holder_id=holder.id)
@@ -30,10 +27,14 @@ class ProjectRepository:
     async def get_by_id(self, project_id: UUID) -> Project | None:
         stmt = select(Project).where(Project.id == project_id)
         return await self.session.scalar(stmt)
-
+    
     async def get_by_user(self, user: User) -> list[Project]:
         stmt = select(Project).where(Project.holder_id == user.id)
         return list((await self.session.scalars(stmt)).all())
+    
+    async def get_by_user_and_name(self, user: User, name: str) -> Project | None:
+        stmt = select(Project).where(Project.holder_id == user.id).where(Project.name == name)
+        return await self.session.scalar(stmt)
 
     async def update(self,
                      project: Project,

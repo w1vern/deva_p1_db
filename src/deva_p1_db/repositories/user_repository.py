@@ -26,6 +26,10 @@ class UserRepository:
     async def get_by_id(self, user_id: UUID) -> User | None:
         stmt = select(User).where(User.id == user_id)
         return await self.session.scalar(stmt)
+    
+    async def get_by_login(self, login: str) -> Optional[User]:
+        stmt = select(User).where(User.login == login)
+        return await self.session.scalar(stmt)
 
     async def get_by_auth(self, login: str, password: str) -> User | None:
         stmt = select(User).where(User.login == login).limit(1)
