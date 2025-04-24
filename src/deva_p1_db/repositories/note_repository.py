@@ -15,12 +15,12 @@ class NoteRepository:
         self.session = session
 
     async def create(self,
-                     text: str,
                      file: File,
+                     text: str,
                      start_time_code: float,
-                     end_time_code: float = 0
+                     end_time_code: float | None = None
                      ) -> Note | None:
-        if end_time_code == 0:
+        if end_time_code is None:
             end_time_code = start_time_code
         note = Note(text=text,
                     file_id=file.id,

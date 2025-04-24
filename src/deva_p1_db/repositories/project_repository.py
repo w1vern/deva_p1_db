@@ -12,8 +12,8 @@ class ProjectRepository:
         self.session = session
 
     async def create(self,
-                     name: str,
                      holder: User,
+                     name: str,
                      description: str = ""
                      ) -> Project | None:
         projects = await self.get_by_user(holder)
@@ -30,7 +30,7 @@ class ProjectRepository:
     async def get_by_id(self, project_id: UUID) -> Project | None:
         stmt = select(Project).where(Project.id == project_id)
         return await self.session.scalar(stmt)
-    
+
     async def get_by_user(self, user: User) -> list[Project]:
         stmt = select(Project).where(Project.holder_id == user.id)
         return list((await self.session.scalars(stmt)).all())
@@ -65,5 +65,3 @@ class ProjectRepository:
     async def add_transcription_file(self, project: Project, file: File) -> None:
         project.transcription_id = file.id
         await self.session.flush()
-
-    

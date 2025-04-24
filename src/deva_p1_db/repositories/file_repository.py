@@ -13,11 +13,11 @@ class FileRepository:
         self.session = session
 
     async def create(self,
+                     user: User,
+                     project: Project,
                      user_file_name: str,
                      file_type: str,
                      file_size: int,
-                     user: User,
-                     project: Project,
                      task: Task | None = None,
                      metadata_is_hide: bool | None = None,
                      metadata_timecode: float | None = None,
@@ -59,6 +59,11 @@ class FileRepository:
     async def get_by_file_type(self, file_type: str) -> list[File]:
         stmt = select(File).where(File.file_type == file_type)
         return list((await self.session.scalars(stmt)).all())
+    
+    async def get_by_file_category(self, category: str) -> list[File]:
+        stmt = select(File)
+        files = list((await self.session.scalars(stmt)).all())
+        return [file for file in files if resolve_file_type(file.file_type).category == category]
 
     async def get_by_user_file_name(self, user_file_name: str) -> list[File]:
         stmt = select(File).where(File.file_name == user_file_name)
@@ -71,7 +76,7 @@ class FileRepository:
     async def get_by_project_and_category(self, project: Project, category: str) -> list[File]:
         stmt = select(File).where(File.project_id == project.id)
         project_files = list((await self.session.scalars(stmt)).all())
-        return [file for file in project_files if resolve_file_type(file.file_type)]
+        return [file for file in project_files if resolve_file_type(file.file_type).category == category]
 
     async def get_active_images(self, project: Project) -> list[File]:
         _ = await self.get_by_project_and_category(project, FileCategory.image.value)
