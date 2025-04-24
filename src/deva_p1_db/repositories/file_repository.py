@@ -15,7 +15,7 @@ class FileRepository:
     async def create(self,
                      user: User,
                      project: Project,
-                     user_file_name: str,
+                     file_name: str,
                      file_type: str,
                      file_size: int,
                      task: Task | None = None,
@@ -27,7 +27,7 @@ class FileRepository:
             task_id = UUID(int=0)
         else:
             task_id = task.id
-        file = File(user_file_name=user_file_name,
+        file = File(file_name=file_name,
                     file_type=file_type,
                     file_size=file_size,
                     user_id=user.id,
@@ -65,8 +65,8 @@ class FileRepository:
         files = list((await self.session.scalars(stmt)).all())
         return [file for file in files if resolve_file_type(file.file_type).category == category]
 
-    async def get_by_user_file_name(self, user_file_name: str) -> list[File]:
-        stmt = select(File).where(File.file_name == user_file_name)
+    async def get_by_file_name(self, file_name: str) -> list[File]:
+        stmt = select(File).where(File.file_name == file_name)
         return list((await self.session.scalars(stmt)).all())
 
     async def delete(self, file: File) -> None:
