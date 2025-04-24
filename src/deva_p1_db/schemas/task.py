@@ -14,3 +14,7 @@ class TaskReadyToBack(BaseModel):
 class TaskStatusToBack(BaseModel):
     task_id: UUID
     progress: float
+
+class TaskErrorToBack(BaseModel):
+    task_id: UUID
+    error: str
