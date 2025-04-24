@@ -1,6 +1,5 @@
 
 
-from typing import Optional
 from uuid import UUID, uuid4
 
 from sqlalchemy import ForeignKey
@@ -9,10 +8,6 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from deva_p1_db.models.base import Base
 from deva_p1_db.models.project import Project
 from deva_p1_db.models.user import User
-
-
-class File:
-    pass
 
 
 class Task(Base):
@@ -32,4 +27,4 @@ class Task(Base):
                                             project_id])
     user: Mapped[User] = relationship(lazy="selectin", foreign_keys=[user_id])
     origin_task: Mapped["Task | None"] = relationship(
-        lazy="selectin", foreign_keys=[origin_task_id])
+        lazy="selectin", foreign_keys=[origin_task_id], remote_side="Task.id")

@@ -1,14 +1,13 @@
 
 
 from datetime import datetime
-from typing import TYPE_CHECKING, Optional
+from typing import TYPE_CHECKING
 from uuid import UUID, uuid4
 
-from sqlalchemy import ForeignKey, null
+from sqlalchemy import ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy.sql import func
 
-from deva_p1_db.enums.file_type import resolve_file_type
 from deva_p1_db.models.base import Base
 from deva_p1_db.models.task import Task
 from deva_p1_db.models.user import User
@@ -49,7 +48,8 @@ class File(Base):
     user: Mapped[User] = relationship(lazy="selectin", foreign_keys=[user_id])
     project: Mapped["Project"] = relationship(lazy="selectin", foreign_keys=[
                                               project_id])
-    task: Mapped[Task | None] = relationship(lazy="selectin", foreign_keys=[task_id])
+    task: Mapped[Task | None] = relationship(
+        lazy="selectin", foreign_keys=[task_id])
 
     @property
     def minio_name(self) -> str:
