@@ -52,6 +52,11 @@ class TaskRepository:
         stmt = select(Task).where(Task.origin_task_id == task.id)
         return list((await self.session.scalars(stmt)).all())
     
-    async def task_done(self, task: Task):
+    async def task_done(self, task: Task) -> None:
         task.done = True
         await self.session.flush()
+
+    async def add_subtask_count(self, task: Task,count: int) -> None:
+        task.subtask_count = count
+        await self.session.flush()
+
