@@ -86,7 +86,8 @@ class FileRepository:
                               file: File,
                               is_hide: bool | None = None,
                               timecode: float | None = None,
-                              text: str | None = None
+                              text: str | None = None,
+                              file_name: str | None = None
                               ) -> None:
         if is_hide is not None:
             file.metadata_is_hide = is_hide
@@ -94,4 +95,6 @@ class FileRepository:
             file.metadata_timecode = timecode
         if text is not None:
             file.metadata_text = text
+        if file_name is not None:
+            file.file_name = file_name
         await self.session.flush()
