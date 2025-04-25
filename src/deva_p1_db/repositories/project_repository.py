@@ -55,14 +55,30 @@ class ProjectRepository:
         project.origin_file_id = file.id
         await self.session.flush()
 
+    async def delete_origin_file(self, project: Project) -> None:
+        project.origin_file_id = None
+        await self.session.flush()
+
     async def add_summary_file(self, project: Project, file: File) -> None:
         project.summary_id = file.id
+        await self.session.flush()
+
+    async def delete_summary_file(self, project: Project) -> None:
+        project.summary_id = None
         await self.session.flush()
 
     async def frames_extracted_done(self, project: Project) -> None:
         project.frames_extract_done = True
         await self.session.flush()
 
+    async def frames_extracted_reset(self, project: Project) -> None:
+        project.frames_extract_done = False
+        await self.session.flush()
+
     async def add_transcription_file(self, project: Project, file: File) -> None:
         project.transcription_id = file.id
+        await self.session.flush()
+
+    async def delete_transcription_file(self, project: Project) -> None:
+        project.transcription_id = None
         await self.session.flush()
