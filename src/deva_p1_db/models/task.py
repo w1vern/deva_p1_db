@@ -17,6 +17,7 @@ class Task(Base):
     done: Mapped[bool] = mapped_column(default=False)
     task_type: Mapped[str]
     prompt: Mapped[str]
+    subtask_count: Mapped[int]
 
     project_id: Mapped[UUID] = mapped_column(ForeignKey("projects.id"))
     user_id: Mapped[UUID] = mapped_column(ForeignKey("users.id"))

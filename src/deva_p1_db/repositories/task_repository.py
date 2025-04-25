@@ -18,13 +18,15 @@ class TaskRepository:
                      project: Project,
                      task_type: str,
                      prompt: str = "",
-                     origin_task: Task | None = None
+                     origin_task: Task | None = None,
+                     subtask_count: int = 0
                      ) -> Task | None:
         task = Task(task_type=task_type,
                     project_id=project.id,
                     user_id=user.id,
                     prompt=prompt,
-                    origin_task_id=origin_task.id if origin_task else None)
+                    origin_task_id=origin_task.id if origin_task else None,
+                    subtask_count=subtask_count)
         self.session.add(task)
         await self.session.flush()
         return await self.get_by_id(task.id)
