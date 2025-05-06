@@ -1,7 +1,8 @@
 
 
-from .task_type import TaskType
 from faststream.rabbit import RabbitQueue
+
+from .task_type import TaskType
 
 
 class RabbitQueuesToAi:
@@ -13,6 +14,9 @@ class RabbitQueuesToAi:
     )
     frames_extract_task = RabbitQueue(
         name=f"{TaskType.frames_extract.value}_task"
+    )
+    summary_edit_task = RabbitQueue(
+        name=f"{TaskType.summary_edit.value}_task"
     )
 
 class RabbitQueuesToBack:

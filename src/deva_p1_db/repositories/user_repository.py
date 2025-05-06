@@ -8,14 +8,14 @@ from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 from werkzeug.security import check_password_hash, generate_password_hash
 
-from deva_p1_db.models import *
+from deva_p1_db.models import User
 
 
 class UserRepository:
     def __init__(self, session: AsyncSession):
         self.session = session
 
-    async def create(self, login: str, password: str) -> Optional[User]:
+    async def create(self, login: str, password: str) -> User | None:
         user = User(login=login,
                     hashed_password=generate_password_hash(password),
                     secret=token_urlsafe(32))
@@ -23,11 +23,15 @@ class UserRepository:
         await self.session.flush()
         return await self.get_by_id(user.id)
 
-    async def get_by_id(self, user_id: UUID) -> Optional[User]:
+    async def get_by_id(self, user_id: UUID) -> User | None:
         stmt = select(User).where(User.id == user_id)
         return await self.session.scalar(stmt)
+    
+    async def get_by_login(self, login: str) -> Optional[User]:
+        stmt = select(User).where(User.login == login)
+        return await self.session.scalar(stmt)
 
-    async def get_by_auth(self, login: str, password: str) -> Optional[User]:
+    async def get_by_auth(self, login: str, password: str) -> User | None:
         stmt = select(User).where(User.login == login).limit(1)
         user = await self.session.scalar(stmt)
         if user is None:

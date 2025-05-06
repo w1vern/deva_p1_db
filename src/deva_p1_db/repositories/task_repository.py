@@ -6,7 +6,7 @@ from uuid import UUID
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from deva_p1_db.models import *
+from deva_p1_db.models import Project, Task, User
 
 
 class TaskRepository:
@@ -14,20 +14,24 @@ class TaskRepository:
         self.session = session
 
     async def create(self,
-                     task_type: str,
-                     project: Project,
                      user: User,
-                     origin_file: File
-                     ) -> Optional[Task]:
+                     project: Project,
+                     task_type: str,
+                     prompt: str = "",
+                     origin_task: Task | None = None,
+                     subtask_count: int = 0
+                     ) -> Task | None:
         task = Task(task_type=task_type,
                     project_id=project.id,
                     user_id=user.id,
-                    origin_file_id=origin_file.id)
+                    prompt=prompt,
+                    origin_task_id=origin_task.id if origin_task else None,
+                    subtask_count=subtask_count)
         self.session.add(task)
         await self.session.flush()
         return await self.get_by_id(task.id)
 
-    async def get_by_id(self, task_id: UUID) -> Optional[Task]:
+    async def get_by_id(self, task_id: UUID) -> Task | None:
         stmt = select(Task).where(Task.id == task_id)
         return await self.session.scalar(stmt)
 
@@ -39,11 +43,20 @@ class TaskRepository:
         stmt = select(Task).where(Task.user_id == user.id)
         return list((await self.session.scalars(stmt)).all())
 
-    async def get_by_origin_file(self, origin_file: File) -> list[Task]:
-        stmt = select(Task).where(Task.origin_file_id == origin_file.id)
-        return list((await self.session.scalars(stmt)).all())
-
-    async def get_by_project_and_user(self, project: Project, user: User) -> list[Task]:
+    async def get_by_project_and_user(self, user: User, project: Project) -> list[Task]:
         stmt = select(Task).where(Task.project_id ==
                                   project.id).where(Task.user_id == user.id)
         return list((await self.session.scalars(stmt)).all())
+
+    async def get_by_origin_task(self, task: Task) -> list[Task]:
+        stmt = select(Task).where(Task.origin_task_id == task.id)
+        return list((await self.session.scalars(stmt)).all())
+    
+    async def task_done(self, task: Task) -> None:
+        task.done = True
+        await self.session.flush()
+
+    async def add_subtask_count(self, task: Task,count: int) -> None:
+        task.subtask_count = count
+        await self.session.flush()
+

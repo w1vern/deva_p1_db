@@ -2,6 +2,7 @@
 
 from typing import Optional
 from uuid import UUID
+
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -13,16 +14,23 @@ class NoteRepository:
     def __init__(self, session: AsyncSession):
         self.session = session
 
-    async def create(self, text: str, file: File, start_time_code: float, end_time_code: float = 0) -> Optional[Note]:
-        if end_time_code == 0:
+    async def create(self,
+                     file: File,
+                     text: str,
+                     start_time_code: float,
+                     end_time_code: float | None = None
+                     ) -> Note | None:
+        if end_time_code is None:
             end_time_code = start_time_code
-        note = Note(text=text, file_id=file.id,
-                    start_time_code=start_time_code, end_time_code=end_time_code)
+        note = Note(text=text,
+                    file_id=file.id,
+                    start_time_code=start_time_code,
+                    end_time_code=end_time_code)
         self.session.add(note)
         await self.session.flush()
         return await self.get_by_id(note.id)
 
-    async def get_by_id(self, note_id: UUID) -> Optional[Note]:
+    async def get_by_id(self, note_id: UUID) -> Note | None:
         stmt = select(Note).where(Note.id == note_id)
         return await self.session.scalar(stmt)
 
@@ -47,5 +55,3 @@ class NoteRepository:
         if new_end_time_code is not None:
             note.end_time_code = new_end_time_code
         await self.session.flush()
-        
-        

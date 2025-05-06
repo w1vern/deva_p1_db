@@ -1,11 +1,9 @@
-from datetime import datetime
-from typing import Optional
 from uuid import UUID
 
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from deva_p1_db.models import *
+from deva_p1_db.models import File, Project, User
 
 
 class ProjectRepository:
@@ -13,51 +11,74 @@ class ProjectRepository:
         self.session = session
 
     async def create(self,
-                     name: str,
-                     description: str,
                      holder: User,
-                     created_date: datetime | None = None,
-                     last_modified_date: datetime | None = None
-                     ) -> Optional[Project]:
-        if created_date is None:
-            created_date = datetime.now()
-        if last_modified_date is None:
-            last_modified_date = datetime.now()
-        projects = await self.get_by_user(holder)
-        for project in projects:
-            if project.name == name:
-                raise Exception("Project with this name already exists")
+                     name: str,
+                     description: str = ""
+                     ) -> Project | None:
+        if await self.get_by_user_and_name(holder, name) is not None:
+            raise Exception(f"Project with name {name} already exists for user {holder.id}")
         project = Project(name=name,
                           description=description,
-                          holder_id=holder.id,
-                          created_date=created_date,
-                          last_modified_date=last_modified_date)
+                          holder_id=holder.id)
         self.session.add(project)
         await self.session.flush()
         return await self.get_by_id(project.id)
 
-    async def get_by_id(self, project_id: UUID) -> Optional[Project]:
+    async def get_by_id(self, project_id: UUID) -> Project | None:
         stmt = select(Project).where(Project.id == project_id)
         return await self.session.scalar(stmt)
     
     async def get_by_user(self, user: User) -> list[Project]:
         stmt = select(Project).where(Project.holder_id == user.id)
         return list((await self.session.scalars(stmt)).all())
+    
+    async def get_by_user_and_name(self, user: User, name: str) -> Project | None:
+        stmt = select(Project).where(Project.holder_id == user.id).where(Project.name == name)
+        return await self.session.scalar(stmt)
 
     async def update(self,
                      project: Project,
                      name: str | None = None,
-                     description: str | None = None,
-                     last_modified_date: datetime | None = None
+                     description: str | None = None
                      ) -> None:
         if name is not None:
             project.name = name
         if description is not None:
             project.description = description
-        if last_modified_date is not None:
-            project.last_modified_date = last_modified_date
         await self.session.flush()
 
     async def delete(self, project: Project) -> None:
         await self.session.delete(project)
+        await self.session.flush()
+
+    async def add_origin_file(self, project: Project, file: File) -> None:
+        project.origin_file_id = file.id
+        await self.session.flush()
+
+    async def delete_origin_file(self, project: Project) -> None:
+        project.origin_file_id = None
+        await self.session.flush()
+
+    async def add_summary_file(self, project: Project, file: File) -> None:
+        project.summary_id = file.id
+        await self.session.flush()
+
+    async def delete_summary_file(self, project: Project) -> None:
+        project.summary_id = None
+        await self.session.flush()
+
+    async def frames_extracted_done(self, project: Project) -> None:
+        project.frames_extract_done = True
+        await self.session.flush()
+
+    async def frames_extracted_reset(self, project: Project) -> None:
+        project.frames_extract_done = False
+        await self.session.flush()
+
+    async def add_transcription_file(self, project: Project, file: File) -> None:
+        project.transcription_id = file.id
+        await self.session.flush()
+
+    async def delete_transcription_file(self, project: Project) -> None:
+        project.transcription_id = None
         await self.session.flush()
