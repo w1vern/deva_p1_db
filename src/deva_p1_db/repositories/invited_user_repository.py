@@ -38,3 +38,7 @@ class InvitedUserRepository:
         stmt = select(InvitedUser).where(
             InvitedUser.project_id == project.id)
         return list((await self.session.scalars(stmt)).all())
+
+    async def delete(self, invited_user: InvitedUser) -> None:
+        await self.session.delete(invited_user)
+        await self.session.flush()
